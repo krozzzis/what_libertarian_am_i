@@ -1,0 +1,10 @@
+services:
+  bot:
+    build: .
+    env_file:
+      - .env
+    environment:
+      - QUIZ_PATH=/app/data/quiz.json5
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped

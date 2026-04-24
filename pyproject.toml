@@ -1,0 +1,13 @@
+[project]
+name = "libertest"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "aiogram>=3.27.0",
+    "aiogram-dialog>=2.6.0",
+    "json5>=0.14.0",
+    "pydantic>=2.12.5",
+    "python-dotenv>=1.2.2",
+]
