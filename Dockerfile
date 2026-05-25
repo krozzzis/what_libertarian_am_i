@@ -1,15 +1,26 @@
-FROM ghcr.io/astral-sh/uv:latest
+FROM ghcr.io/astral-sh/uv:0.6.14-python3.13-bookworm-slim
+
+LABEL org.opencontainers.image.source="https://github.com/krozzzis/libertest"
+LABEL org.opencontainers.image.description="Libertest bot"
 
 WORKDIR /app
 
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    UV_COMPILE_BYTECODE=1 \
+    UV_LINK_MODE=copy \
+    QUIZ_PATH=/app/data/quiz.json5
+
 COPY pyproject.toml uv.lock ./
-RUN uv sync --frozen --no-dev
+RUN uv sync --frozen --no-dev --no-install-project
 
 COPY src /app/src
-COPY data /app/data
+RUN uv sync --frozen --no-dev && \
+    addgroup --system --gid 1001 app && \
+    adduser --system --uid 1001 --gid 1001 app && \
+    mkdir -p /app/logs && \
+    chown -R app:app /app
 
-ENV BOT_TOKEN=${BOT_TOKEN}
-ENV QUIZ_PATH=/app/data/quiz.json5
-ENV PARTY_URL=${PARTY_URL:-https://lpr.ural.vrn.ru/join}
+USER app
 
 CMD ["python", "-m", "src.main"]
