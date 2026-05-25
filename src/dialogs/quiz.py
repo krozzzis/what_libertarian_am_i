@@ -6,6 +6,8 @@ from aiogram_dialog import (
     Window,
     Dialog,
     DialogManager,
+    ShowMode,
+    StartMode,
 )
 from aiogram_dialog.widgets.text import Const, Format
 from aiogram_dialog.widgets.kbd import Group, Select
