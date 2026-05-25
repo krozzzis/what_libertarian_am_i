@@ -9,6 +9,8 @@ ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     UV_COMPILE_BYTECODE=1 \
     UV_LINK_MODE=copy \
+    UV_CACHE_DIR=/tmp/uv-cache \
+    HOME=/app \
     QUIZ_PATH=/app/data/quiz.json5
 
 COPY pyproject.toml uv.lock ./
