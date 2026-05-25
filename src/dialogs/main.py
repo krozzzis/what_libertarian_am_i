@@ -141,19 +141,20 @@ async def show_all(message: Message):
 
         name_parts = []
         if "geo" in image_key:
-            name_parts.append(QUIZ_DATA.ideologies["geo"].prefix)
+            geo_def = QUIZ_DATA.ideologies.get("geo")
+            if geo_def and geo_def.prefix:
+                name_parts.append(geo_def.prefix)
         if "paleo" in image_key:
-            name_parts.append(QUIZ_DATA.ideologies["paleo"].prefix)
+            paleo_def = QUIZ_DATA.ideologies.get("paleo")
+            if paleo_def and paleo_def.prefix:
+                name_parts.append(paleo_def.prefix)
         if "bleeding-heart" in image_key:
-            name_parts.append(QUIZ_DATA.ideologies["bleeding-heart"].prefix)
+            bh_def = QUIZ_DATA.ideologies.get("bleeding-heart")
+            if bh_def and bh_def.prefix:
+                name_parts.append(bh_def.prefix)
         name_parts.append(base_name)
         display_name = "-".join(name_parts)
 
-        results.append((display_name, base_key, ideology_def, image_key))
-
-    # Отправка
-    total = len(results)
-    for i, (display_name, base_key, ideology_def, image_key) in enumerate(results):
         result_msg = ideology_def.result_message if ideology_def else None
         if result_msg:
             person_name = ideology_def.idealogy_person if ideology_def.idealogy_person else display_name
@@ -178,14 +179,19 @@ async def show_all(message: Message):
             )
             image_path = base_dir / img
             if image_path.exists() and image_path.is_file():
-                await message.answer_photo(FSInputFile(image_path), caption=text)
+                results.append(message.answer_photo(FSInputFile(image_path), caption=text, parse_mode="HTML"))
             else:
-                await message.answer_photo(img, caption=text)
+                results.append(message.answer_photo(img, caption=text, parse_mode="HTML"))
         else:
-            await message.answer(text)
+            results.append(message.answer(text, parse_mode="HTML"))
 
-        if i < total - 1:
-            await asyncio.sleep(0.5)
+    sem = asyncio.Semaphore(3)
+
+    async def send(coro):
+        async with sem:
+            await coro
+
+    await asyncio.gather(*[send(r) for r in results])
 
 
 async def setup_bot_commands(bot: Bot):
