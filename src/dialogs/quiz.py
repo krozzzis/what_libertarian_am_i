@@ -14,6 +14,7 @@ from aiogram_dialog.widgets.kbd import Button
 from quiz import QuizData
 import quiz
 from quiz import get_ideology_data
+from loguru import logger
 
 
 class QuizSG(StatesGroup):
@@ -61,6 +62,18 @@ async def choose_answer(callback: CallbackQuery, widget: Any, manager: DialogMan
 
     quiz_data: Optional[QuizData] = quiz.QUIZ_DATA
     total = len(quiz_data.questions)
+
+    # Log the choice
+    answers = quiz_data.get_question_answers(question)
+    selected_answer = next((a for a in answers if str(a.id) == item_id), None)
+    answer_text = selected_answer.text if selected_answer else f"ID: {item_id}"
+    logger.info(
+        "Selected answer for question {}/{}: '{}' (Choice: {})",
+        current + 1,
+        total,
+        question.text,
+        answer_text
+    )
 
     if current < total-1:
         manager.dialog_data["current_index"] = current + 1
