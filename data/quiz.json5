@@ -138,79 +138,79 @@
     "ancap": {
       "full_name": "Анархо-капитализм",
       "idealogy_person": "Анархо-капиталист",
-      "result_message": "Поздравляю! Вы <b>%idealogy_person%</b>.\n\nВам будут рады в Либертарианской Партии России. <a href='%party_url%'>Вступить</a>"
+      "result_message": "Поздравляю! Вы <b>%idealogy_person%</b>.\n\nВам будут рады в Либертарианской Партии России.\n<a href='%party_url%'>Заполнить заявку на вступление</a>"
     },
     "paleo-ancap": {
       "full_name": "Палео-анархо-капитализм",
       "idealogy_person": "Палео-анархо-капиталист",
-      "result_message": "Поздравляю! Вы <b>%idealogy_person%</b>.\n\nВам будут рады в Либертарианской Партии России. <a href='%party_url%'>Вступить</a>"
+      "result_message": "Поздравляю! Вы <b>%idealogy_person%</b>.\n\nВам будут рады в Либертарианской Партии России.\n<a href='%party_url%'>Заполнить заявку на вступление</a>"
     },
     "minarchism": {
       "full_name": "Минархизм",
       "base_name": "Минархизм",
       "idealogy_person": "Минархист",
-      "result_message": "Поздравляю! Вы <b>%idealogy_person%</b>.\n\nВам будут рады в Либертарианской Партии России. <a href='%party_url%'>Вступить</a>"
+      "result_message": "Поздравляю! Вы <b>%idealogy_person%</b>.\n\nВам будут рады в Либертарианской Партии России.\n<a href='%party_url%'>Заполнить заявку на вступление</a>"
     },
     "paleo-minarchism": {
       "full_name": "Палео-минархизм",
       "idealogy_person": "Палео-минархист",
-      "result_message": "Поздравляю! Вы <b>%idealogy_person%</b>.\n\nВам будут рады в Либертарианской Партии России. <a href='%party_url%'>Вступить</a>"
+      "result_message": "Поздравляю! Вы <b>%idealogy_person%</b>.\n\nВам будут рады в Либертарианской Партии России.\n<a href='%party_url%'>Заполнить заявку на вступление</a>"
     },
     "bleeding-heart-minarchism": {
       "full_name": "Сострадательный минархизм",
       "idealogy_person": "Сострадательный минархист",
-      "result_message": "Поздравляю! Вы <b>%idealogy_person%</b>.\n\nВам будут рады в Либертарианской Партии России. <a href='%party_url%'>Вступить</a>"
+      "result_message": "Поздравляю! Вы <b>%idealogy_person%</b>.\n\nВам будут рады в Либертарианской Партии России.\n<a href='%party_url%'>Заполнить заявку на вступление</a>"
     },
     "geo-minarchism": {
       "full_name": "Гео-минархизм",
       "idealogy_person": "Гео-минархист",
-      "result_message": "Поздравляю! Вы <b>%idealogy_person%</b>.\n\nВам будут рады в Либертарианской Партии России. <a href='%party_url%'>Вступить</a>"
+      "result_message": "Поздравляю! Вы <b>%idealogy_person%</b>.\n\nВам будут рады в Либертарианской Партии России.\n<a href='%party_url%'>Заполнить заявку на вступление</a>"
     },
     "geo-paleo-minarchism": {
       "full_name": "Гео-палео-минархизм",
       "idealogy_person": "Гео-палео-минархист",
-      "result_message": "Поздравляю! Вы <b>%idealogy_person%</b>.\n\nВам будут рады в Либертарианской Партии России. <a href='%party_url%'>Вступить</a>"
+      "result_message": "Поздравляю! Вы <b>%idealogy_person%</b>.\n\nВам будут рады в Либертарианской Партии России.\n<a href='%party_url%'>Заполнить заявку на вступление</a>"
     },
     "geo-bleeding-heart-minarchism": {
       "full_name": "Гео-сострадательный минархизм",
       "idealogy_person": "Гео-сострадательный минархист",
-      "result_message": "Поздравляю! Вы <b>%idealogy_person%</b>.\n\nВам будут рады в Либертарианской Партии России. <a href='%party_url%'>Вступить</a>"
+      "result_message": "Поздравляю! Вы <b>%idealogy_person%</b>.\n\nВам будут рады в Либертарианской Партии России.\n<a href='%party_url%'>Заполнить заявку на вступление</a>"
     },
     "classical_liberalism": {
       "full_name": "Классический либерализм",
       "base_name": "Классический либерализм",
       "idealogy_person": "Классический либерал",
-      "result_message": "Поздравляю! Вы <b>%idealogy_person%</b>.\n\nВам будут рады в Либертарианской Партии России. <a href='%party_url%'>Вступить</a>"
+      "result_message": "Поздравляю! Вы <b>%idealogy_person%</b>.\n\nВам будут рады в Либертарианской Партии России.\n<a href='%party_url%'>Заполнить заявку на вступление</a>"
     },
     "fascism": {
       "full_name": "Фашизм",
       "base_name": "Фашизм",
       "idealogy_person": "Фашист",
-      "result_message": "Сожалеем, но вы <b>%idealogy_person%</b>. Не знаем как это произошло, но как уж есть."
+      "result_message": "Сожалеем, но вы <b>%idealogy_person%</b>.\n\nНе знаем как это произошло, но как уж есть."
     },
     "communism": {
       "full_name": "Коммунизм",
       "base_name": "Коммунизм",
       "idealogy_person": "Коммунист",
-      "result_message": "Сожалеем, но вы <b>%idealogy_person%</b>. Не знаем как это произошло, но как уж есть."
+      "result_message": "Сожалеем, но вы <b>%idealogy_person%</b>.\n\nНе знаем как это произошло, но как уж есть."
     },
     "socialism": {
       "full_name": "Социализм",
       "base_name": "Социализм",
       "idealogy_person": "Социалист",
-      "result_message": "Сожалеем, но вы <b>%idealogy_person%</b>. Не знаем как это произошло, но как уж есть."
+      "result_message": "Сожалеем, но вы <b>%idealogy_person%</b>.\n\nНе знаем как это произошло, но как уж есть."
     },
     "social_democracy": {
       "full_name": "Социал-демократия",
       "base_name": "Социал-демократия",
       "idealogy_person": "Социал-демократ",
-      "result_message": "Сожалеем, но вы <b>%idealogy_person%</b>. Не знаем как это произошло, но как уж есть."
+      "result_message": "Сожалеем, но вы <b>%idealogy_person%</b>.\n\Не то чтобы это было плохо, но как уж есть."
     },
     "centrism": {
       "full_name": "Центризм",
       "base_name": "Центризм",
       "idealogy_person": "Центрист",
-      "result_message": "Сожалеем, но вы <b>%idealogy_person%</b>. Не знаем как это произошло, но как уж есть."
+      "result_message": "Сожалеем, но вы <b>%idealogy_person%</b>.\n\Не то чтобы это было плохо, но как уж есть."
     }
   },
   "ideology_images": {
