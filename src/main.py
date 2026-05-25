@@ -17,6 +17,7 @@ from aiogram.types import TelegramObject
 from aiogram.filters import CommandStart, Command, ExceptionTypeFilter
 from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram.fsm.storage.redis import RedisStorage
+from aiogram.fsm.storage.base import DefaultKeyBuilder
 
 from aiogram_dialog import (
     Dialog,
@@ -140,7 +141,10 @@ async def main():
 
     if Config.STORAGE_TYPE == "redis":
         logger.info("Using RedisStorage: {}", Config.REDIS_URL)
-        storage = RedisStorage.from_url(Config.REDIS_URL)
+        storage = RedisStorage.from_url(
+            Config.REDIS_URL,
+            key_builder=DefaultKeyBuilder(with_destiny=True),
+        )
     else:
         logger.info("Using MemoryStorage")
         storage = MemoryStorage()
