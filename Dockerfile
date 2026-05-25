@@ -9,7 +9,6 @@ ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     UV_COMPILE_BYTECODE=1 \
     UV_LINK_MODE=copy \
-    UV_CACHE_DIR=/tmp/uv-cache \
     HOME=/app \
     QUIZ_PATH=/app/data/quiz.json5
 
@@ -18,6 +17,7 @@ RUN uv sync --frozen --no-dev --no-install-project
 
 COPY src /app/src
 RUN uv sync --frozen --no-dev && \
+    rm -rf /root/.cache/uv && \
     addgroup --system --gid 1001 app && \
     adduser --system --uid 1001 --gid 1001 app && \
     mkdir -p /app/logs && \
