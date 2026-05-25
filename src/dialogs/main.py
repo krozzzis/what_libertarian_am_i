@@ -1,11 +1,10 @@
-from pathlib import Path
-
 import asyncio
-from loguru import logger
+from pathlib import Path
 
 from aiogram import Bot, F
 from aiogram.enums import ContentType
 from aiogram.fsm.state import State, StatesGroup
+from aiogram.types import BotCommand, FSInputFile, Message
 from aiogram_dialog import (
     Dialog,
     DialogManager,
@@ -14,13 +13,13 @@ from aiogram_dialog import (
     Window,
 )
 from aiogram_dialog.api.entities import MediaAttachment
-from aiogram_dialog.widgets.text import Const, Format
-from aiogram_dialog.widgets.kbd import Start, Group, Button
+from aiogram_dialog.widgets.kbd import Button, Group, Start
 from aiogram_dialog.widgets.media import DynamicMedia
-from aiogram.types import FSInputFile, Message, BotCommand
+from aiogram_dialog.widgets.text import Const, Format
+from loguru import logger
 
 from config import Config
-from dialogs.quiz import QuizSG, quiz_dialog
+from dialogs.quiz import QuizSG
 
 
 class MainSG(StatesGroup):
@@ -76,8 +75,7 @@ async def get_result_data(dialog_manager: DialogManager, **kwargs):
     if result_message:
         person_name = ideology_def.idealogy_person if ideology_def and ideology_def.idealogy_person else ideology
         final_result_text = (
-            result_message
-            .replace("%ideology_name%", ideology)
+            result_message.replace("%ideology_name%", ideology)
             .replace("%idealogy_person%", person_name)
             .replace("%party_url%", Config.PARTY_URL)
         )
@@ -92,11 +90,7 @@ async def get_result_data(dialog_manager: DialogManager, **kwargs):
     media_attachment = None
 
     if image_name:
-        base_dir = (
-            Path(Config.QUIZ_PATH).parent
-            if getattr(Config, "QUIZ_PATH", None)
-            else Path("data")
-        )
+        base_dir = Path(Config.QUIZ_PATH).parent if getattr(Config, "QUIZ_PATH", None) else Path("data")
         image_path = base_dir / image_name
 
         if image_path.exists() and image_path.is_file():
@@ -159,8 +153,7 @@ async def show_all(message: Message):
         if result_msg:
             person_name = ideology_def.idealogy_person if ideology_def.idealogy_person else display_name
             text = (
-                result_msg
-                .replace("%ideology_name%", display_name)
+                result_msg.replace("%ideology_name%", display_name)
                 .replace("%idealogy_person%", person_name)
                 .replace("%party_url%", Config.PARTY_URL)
             )
@@ -172,11 +165,7 @@ async def show_all(message: Message):
 
         img = _build_image_name(display_name, image_key, QUIZ_DATA.ideology_images)
         if img:
-            base_dir = (
-                Path(Config.QUIZ_PATH).parent
-                if getattr(Config, "QUIZ_PATH", None)
-                else Path("data")
-            )
+            base_dir = Path(Config.QUIZ_PATH).parent if getattr(Config, "QUIZ_PATH", None) else Path("data")
             image_path = base_dir / img
             if image_path.exists() and image_path.is_file():
                 results.append(message.answer_photo(FSInputFile(image_path), caption=text, parse_mode="HTML"))

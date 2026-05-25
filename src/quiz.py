@@ -1,7 +1,7 @@
-import json5
-from pydantic import BaseModel, model_validator
-from typing import Dict, List, Optional
 from pathlib import Path
+
+import json5
+from pydantic import BaseModel
 
 
 class Answer(BaseModel):
@@ -16,15 +16,15 @@ class Answer(BaseModel):
 class Question(BaseModel):
     id: int
     text: str
-    default_answers: Optional[bool] = None
-    answers: Optional[List[int]] = None
-    _resolved_answers: Optional[List[Answer]] = None
+    default_answers: bool | None = None
+    answers: list[int] | None = None
+    _resolved_answers: list[Answer] | None = None
 
     @classmethod
     def create(cls, id: int, text: str) -> "Question":
         return cls(id=id, text=text)
 
-    def get_answers(self, default_answer_ids: List[int], all_answers: List[Answer]) -> List[Answer]:
+    def get_answers(self, default_answer_ids: list[int], all_answers: list[Answer]) -> list[Answer]:
         if self._resolved_answers is not None:
             return self._resolved_answers
 
@@ -35,31 +35,33 @@ class Question(BaseModel):
 
 class IdeologyDef(BaseModel):
     full_name: str
-    prefix: Optional[str] = None
-    base_name: Optional[str] = None
-    result_message: Optional[str] = None
-    idealogy_person: Optional[str] = None
+    prefix: str | None = None
+    base_name: str | None = None
+    result_message: str | None = None
+    idealogy_person: str | None = None
 
 
 class QuizData(BaseModel):
-    questions: List[Question]
-    default_answers: Optional[List[int]] = None
-    answers: List[Answer] = []
-    ideologies: Dict[str, IdeologyDef] = {}
-    ideology_images: Dict[str, str] = {}
+    questions: list[Question]
+    default_answers: list[int] | None = None
+    answers: list[Answer] = []
+    ideologies: dict[str, IdeologyDef] = {}
+    ideology_images: dict[str, str] = {}
 
     @classmethod
-    def create(cls, questions: List[Question]) -> "QuizData":
+    def create(cls, questions: list[Question]) -> "QuizData":
         return cls(questions=questions)
 
-    def get_question_answers(self, question: Question) -> List[Answer]:
+    def get_question_answers(self, question: Question) -> list[Answer]:
         default_ids = self.default_answers or []
         return question.get_answers(default_ids, self.answers)
 
 
-QUIZ_DATA: QuizData = QuizData.create([
-    Question.create(1, "Nothing"),
-])
+QUIZ_DATA: QuizData = QuizData.create(
+    [
+        Question.create(1, "Nothing"),
+    ]
+)
 
 
 def parse_quiz(text: str) -> QuizData:
@@ -77,7 +79,7 @@ def open_quiz(file_path: str | Path) -> QuizData:
     if not path.is_file():
         raise ValueError(f"Path is pointing to directory not to file: {path}")
 
-    with open(path, 'r', encoding='utf-8') as f:
+    with open(path, encoding="utf-8") as f:
         content = f.read()
 
     data = parse_quiz(content)
@@ -105,9 +107,16 @@ def get_ideology_data(user_answers):
     state_axis = scores.get(1, 0) + scores.get(2, 0) + scores.get(9, 0) - scores.get(3, 0) - scores.get(21, 0)
 
     # Культурная ось:
-    # Прогрессивные: q10 (борьба с дискриминацией), q13 (преодоление неравенства), q18 (социальные программы), q22 (равные возможности)
+    # Прогрессивные: q10 (борьба с дискриминацией), q13 (преодоление неравенства),
+    #                q18 (социальные программы), q22 (равные возможности)
     # Традиционные: q11 (семья и традиции), q12 (право отказывать в обслуживании)
-    culture_val = (scores.get(10, 0) + scores.get(13, 0) + scores.get(18, 0) + scores.get(22, 0)) - (scores.get(11, 0) + scores.get(12, 0))
+    culture_val = (
+        scores.get(10, 0)
+        + scores.get(13, 0)
+        + scores.get(18, 0)
+        + scores.get(22, 0)
+        - (scores.get(11, 0) + scores.get(12, 0))
+    )
 
     # Геоизм: q6 (ресурсы всем), q7 (плата за землю) — за геоизм
     # q5 (первозахват земли), q8 (налоги несправедливы) — против геоизма
@@ -124,19 +133,49 @@ def get_ideology_data(user_answers):
         res = {"geo": False, "paleo": False, "bleeding-heart": False}
         # Фашизм: только при максимальном коллективизме (q20 == +2)
         if scores.get(20, 0) >= 2:
-            res.update({"display_name": QUIZ_DATA.ideologies["fascism"].full_name, "ideology_key": "fascism", "result_key": "fascism"})
+            res.update(
+                {
+                    "display_name": QUIZ_DATA.ideologies["fascism"].full_name,
+                    "ideology_key": "fascism",
+                    "result_key": "fascism",
+                }
+            )
         # Коммунизм: максимальный дирижизм (q19 == +2)
         elif scores.get(19, 0) >= 2:
-            res.update({"display_name": QUIZ_DATA.ideologies["communism"].full_name, "ideology_key": "communism", "result_key": "communism"})
+            res.update(
+                {
+                    "display_name": QUIZ_DATA.ideologies["communism"].full_name,
+                    "ideology_key": "communism",
+                    "result_key": "communism",
+                }
+            )
         # Социализм: сильный дирижизм (q19 >= +1) + сильный этатизм (q18 >= +2)
         elif scores.get(19, 0) >= 1 and scores.get(18, 0) >= 2:
-            res.update({"display_name": QUIZ_DATA.ideologies["socialism"].full_name, "ideology_key": "socialism", "result_key": "socialism"})
+            res.update(
+                {
+                    "display_name": QUIZ_DATA.ideologies["socialism"].full_name,
+                    "ideology_key": "socialism",
+                    "result_key": "socialism",
+                }
+            )
         # Социал-демократия: сильный этатизм (q18 >= +2)
         elif scores.get(18, 0) >= 2:
-            res.update({"display_name": QUIZ_DATA.ideologies["social_democracy"].full_name, "ideology_key": "social_democracy", "result_key": "social_democracy"})
+            res.update(
+                {
+                    "display_name": QUIZ_DATA.ideologies["social_democracy"].full_name,
+                    "ideology_key": "social_democracy",
+                    "result_key": "social_democracy",
+                }
+            )
         else:
             # По умолчанию для экстремального этатизма
-            res.update({"display_name": QUIZ_DATA.ideologies["centrism"].full_name, "ideology_key": "centrism", "result_key": "centrism"})
+            res.update(
+                {
+                    "display_name": QUIZ_DATA.ideologies["centrism"].full_name,
+                    "ideology_key": "centrism",
+                    "result_key": "centrism",
+                }
+            )
         return res
 
     # --- 3. Центризм ---
@@ -147,7 +186,9 @@ def get_ideology_data(user_answers):
             "display_name": QUIZ_DATA.ideologies["centrism"].full_name,
             "ideology_key": "centrism",
             "result_key": "centrism",
-            "geo": False, "paleo": False, "bleeding-heart": False
+            "geo": False,
+            "paleo": False,
+            "bleeding-heart": False,
         }
 
     # --- 4. Классификация внутри либертарианского спектра ---

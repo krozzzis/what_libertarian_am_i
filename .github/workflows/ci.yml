@@ -20,7 +20,7 @@ jobs:
         run: uv sync --frozen --no-dev
 
       - name: Lint
-        run: uvx ruff@0.11 check src/
+        run: uvx ruff@0.15 check src/
 
       - name: Format check
-        run: uvx ruff@0.11 format --check src/
+        run: uvx ruff@0.15 format --check src/
