@@ -10,4 +10,6 @@ dependencies = [
     "json5>=0.14.0",
     "loguru>=0.7.3",
     "pydantic>=2.12.5",
+    "python-dotenv>=1.2",
+    "redis>=5.2",
 ]

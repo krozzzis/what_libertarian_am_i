@@ -6,8 +6,13 @@ services:
     environment:
       - QUIZ_PATH=/app/data/quiz.json5
       - LOG_FILE=
+      - STORAGE_TYPE=${STORAGE_TYPE:-memory}
+      - REDIS_URL=${REDIS_URL:-redis://redis:6379/0}
     volumes:
       - ./data:/app/data
+    depends_on:
+      redis:
+        condition: service_healthy
     restart: unless-stopped
     stop_grace_period: 10s
     healthcheck:
@@ -31,6 +36,27 @@ services:
         max-file: "3"
     networks:
       - libertest-net
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    volumes:
+      - redis-data:/data
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: "128M"
+    networks:
+      - libertest-net
+
+volumes:
+  redis-data:
 
 networks:
   libertest-net:

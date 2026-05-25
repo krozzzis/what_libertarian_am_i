@@ -16,6 +16,7 @@ from aiogram import Bot, Dispatcher, BaseMiddleware
 from aiogram.types import TelegramObject
 from aiogram.filters import CommandStart, Command, ExceptionTypeFilter
 from aiogram.fsm.storage.memory import MemoryStorage
+from aiogram.fsm.storage.redis import RedisStorage
 
 from aiogram_dialog import (
     Dialog,
@@ -137,7 +138,12 @@ async def main():
 
     load_quiz(Config.QUIZ_PATH)
 
-    storage = MemoryStorage()
+    if Config.STORAGE_TYPE == "redis":
+        logger.info("Using RedisStorage: {}", Config.REDIS_URL)
+        storage = RedisStorage.from_url(Config.REDIS_URL)
+    else:
+        logger.info("Using MemoryStorage")
+        storage = MemoryStorage()
     dp = Dispatcher(storage=storage)
 
     dp.update.outer_middleware(LoggingMiddleware())

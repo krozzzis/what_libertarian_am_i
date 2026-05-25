@@ -10,3 +10,6 @@ class Config:
     LOG_ROTATION = os.getenv("LOG_ROTATION", default="10 MB")
     LOG_RETENTION = os.getenv("LOG_RETENTION", default="10 days")
     LOG_LEVEL = os.getenv("LOG_LEVEL", default="INFO")
+
+    STORAGE_TYPE = os.getenv("STORAGE_TYPE", default="memory")
+    REDIS_URL = os.getenv("REDIS_URL", default="redis://localhost:6379/0")
