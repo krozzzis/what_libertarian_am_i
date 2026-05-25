@@ -52,7 +52,7 @@ async def go_prev(callback, button: Button, manager: DialogManager):
     current = manager.dialog_data.get("current_index", 0)
     if current == 0:
         from dialogs.main import MainSG
-        await manager.start(MainSG.start, mode=StartMode.RESET_STACK, show_mode=ShowMode.SEND)
+        await manager.start(MainSG.start, mode=StartMode.RESET_STACK, show_mode=ShowMode.EDIT)
     else:
         manager.dialog_data["current_index"] = current - 1
         await manager.update(data=manager.dialog_data)
