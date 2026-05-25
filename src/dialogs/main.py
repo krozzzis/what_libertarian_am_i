@@ -209,7 +209,7 @@ async def start_command(_message: Message, dialog_manager: DialogManager):
 
 main_dialog = Dialog(
     Window(
-        Const("Приветствуем вас на тесте политических координат от ЛПР.Урал"),
+        Const("Это тест на политическую принадлежность. Здесь вы узнаете какой вы либертарианец."),
         Group(
             Start(Const("Начать тест"), id="set", state=QuizSG.question, data={"selected_answers": {}}),
             width=1,
@@ -221,7 +221,7 @@ main_dialog = Dialog(
         DynamicMedia("result_image", when=F["result_image"]),
         Format("{final_result_text}"),
         # Format("\n<b><i>(DEBUG)</i>Выбранные ответы:</b>\n<code>{selected_answers}</code>\n"),
-        Button(Const("Пройти еще раз"), id="restart", on_click=restart_test),
+        Button(Const("В меню"), id="restart", on_click=restart_test),
         state=MainSG.result,
         getter=get_result_data,
         parse_mode="HTML",
