@@ -1,6 +1,3 @@
-from dotenv import load_dotenv
-load_dotenv()
-
 from config import Config
 
 from dialogs.main import MainSG, start_command, show_all, main_dialog, setup_bot_commands
@@ -57,10 +54,10 @@ def patch_record(record):
 
 def log_formatter(record):
     format_str = "<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | <level>{level: <8}</level> | <cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan>"
-    
+
     user_id = record["extra"].get("user_id")
     username = record["extra"].get("username")
-    
+
     if user_id or username:
         user_info = []
         if user_id:
@@ -68,20 +65,20 @@ def log_formatter(record):
         if username:
             user_info.append(f"@{username}")
         format_str += f" | <yellow>[{', '.join(user_info)}]</yellow>"
-        
+
     format_str += " - <level>{message}</level>\n"
     if record["exception"]:
         format_str += "{exception}\n"
-        
+
     return format_str
 
 def setup_logging():
     logging.basicConfig(handlers=[InterceptHandler()], level=logging.INFO, force=True)
     logger.remove()
-    
+
     # Configure global patcher
     logger.configure(patcher=patch_record)
-    
+
     logger.add(sys.stderr, level=Config.LOG_LEVEL, format=log_formatter)
     if Config.LOG_FILE:
         logger.add(
@@ -103,7 +100,7 @@ class LoggingMiddleware(BaseMiddleware):
         user = data.get("event_from_user")
         if user:
             current_user_info.set({"user_id": user.id, "username": user.username})
-            
+
             # Log incoming updates safely
             from aiogram.types import Update, Message, CallbackQuery
             inner_event = event.event if isinstance(event, Update) else event
@@ -111,7 +108,7 @@ class LoggingMiddleware(BaseMiddleware):
                 logger.info("Received message: '{}'", inner_event.text or inner_event.caption or "[media]")
             elif isinstance(inner_event, CallbackQuery):
                 logger.info("Received callback: '{}'", inner_event.data)
-                
+
             with logger.contextualize(user_id=user.id, username=user.username):
                 return await handler(event, data)
         return await handler(event, data)
@@ -142,7 +139,7 @@ async def main():
 
     storage = MemoryStorage()
     dp = Dispatcher(storage=storage)
-    
+
     dp.update.outer_middleware(LoggingMiddleware())
 
     dp.errors.register(on_unknown_intent, ExceptionTypeFilter(UnknownIntent))
@@ -161,5 +158,4 @@ async def main():
 
 
 if __name__ == "__main__":
-    load_dotenv()
     asyncio.run(main())
