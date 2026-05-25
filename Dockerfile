@@ -23,4 +23,4 @@ RUN uv sync --frozen --no-dev && \
 
 USER app
 
-CMD ["python", "-m", "src.main"]
+CMD ["uv", "run", "src/main.py"]
