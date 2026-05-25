@@ -42,13 +42,18 @@ async def get_quiz_data(dialog_manager: DialogManager, **kwargs):
         "question_total": len(quiz_data.questions),
         "answers": answers_data,
         "has_prev": current_index > 0,
+        "back_button_text": "Назад ←" if current_index == 0 else "Назад ←",
     }
 
 
 async def go_prev(callback, button: Button, manager: DialogManager):
     current = manager.dialog_data.get("current_index", 0)
-    manager.dialog_data["current_index"] = max(0, current - 1)
-    await manager.update(data=manager.dialog_data)
+    if current == 0:
+        from dialogs.main import MainSG
+        await manager.start(MainSG.start, mode=StartMode.RESET_STACK, show_mode=ShowMode.SEND)
+    else:
+        manager.dialog_data["current_index"] = current - 1
+        await manager.update(data=manager.dialog_data)
 
 
 async def choose_answer(callback: CallbackQuery, widget: Any, manager: DialogManager, item_id: str):
@@ -101,8 +106,7 @@ quiz_dialog = Dialog(
             width=1,
         ),
         Button(
-            Const("Назад"),
-            when=F["has_prev"],
+            Format("{back_button_text}"),
             id="go_prev",
             on_click=go_prev,
         ),

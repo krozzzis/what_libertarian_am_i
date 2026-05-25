@@ -209,7 +209,7 @@ async def start_command(_message: Message, dialog_manager: DialogManager):
 
 main_dialog = Dialog(
     Window(
-        Const("Это тест на политическую принадлежность. Здесь вы узнаете какой вы либертарианец."),
+        Const("Это тест на политическую принадлежность от <b>Либертарианства на урале</b>."),
         Group(
             Start(Const("Начать тест"), id="set", state=QuizSG.question, data={"selected_answers": {}}),
             width=1,
